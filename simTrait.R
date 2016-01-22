@@ -5,7 +5,7 @@
 #### Stony Brook University - USA
 ################################################################
 
-#### COMPARE FD INDICES
+#### COMPARE FD INDICES ####
 
 require(FD)
 
