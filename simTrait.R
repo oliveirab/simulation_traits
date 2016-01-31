@@ -1,11 +1,9 @@
-################################################################
-#### Ecological Limits on Diversity 
-#### Brunno Oliveira, 2014
-#### Universidade Federal do Rio Grande do Norte - Brasil
-#### Stony Brook University - USA
-################################################################
+# Source code for simulation assemblages and calculating FD metrics.
+# Originaly submited in:
+# Oliveira et al., 2016 Species and functional diversity accumulate differently in
+# terrestrial mammals. Global Ecology and Biogeography
 
-#### COMPARE FD INDICES ####
+################################################################
 
 require(FD)
 
@@ -60,10 +58,8 @@ panel.hist <- function(x, ...)
 
 res<-simul.dbFD(s = c(5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100), t = 3, 
            r = 1000, p = 500, tr.method ="norm", w.abun = F)
-str(res)
 
 res$abun[res$abun > 0] <- 1 
-rowSums(res$abun)
 
 #get sd of traits in assemblages
 
