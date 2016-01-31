@@ -1,7 +1,7 @@
+
 ---
-title: "supplementary material: Species and functional diversity accumulate differently in terrestrial mammals"
-author: "Brunno F. Oliveira^1,2^, Antonin Machac^3,4,5^, Gabriel C. Costa^1^, Thomas M. Brooks^6^, Ana D. Davidson^7^, Carlo Rondinini^8^ and Catherine H. Graham^2^
-"
+title: 'supplementary material: Species and functional diversity accumulate differently in terrestrial mammals'
+author: "Brunno F. Oliveira^1,2^; Antonin Machac^3,4,5^; Gabriel C. Costa^1^; Thomas M. Brooks^6^; Ana D. Davidson^7^; Carlo Rondinini^8^; Catherine H. Graham^2^;
 date: "Global Ecology and Biogeography, 2016 |
 
 **1** Departamento de Ecologia, Universidade Federal do Rio Grande do Norte, Natal, Brasil. |
