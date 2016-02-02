@@ -1,4 +1,4 @@
-###############################################################
+##############################################################
 #### Brunno Oliveira, 2016
 #### Modified version of simul.dbFD from FD package
 #### With this function it is possible to give parameters for simulated trait values
@@ -7,7 +7,7 @@
 #### If tr.method = norm .:. c(mean, sd)
 #### If tr.method = unif .:. c(min, max)
 #### Contact brunno.oliveira@me.com for any further information.
-###############################################################
+##############################################################
 
 simul.dbFD.mod <- 
 function (s = c(5, 10, 15, 20, 25, 30, 35, 40), t = 3, r = 10, 
