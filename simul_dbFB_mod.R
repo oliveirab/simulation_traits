@@ -115,3 +115,5 @@ function (s = c(5, 10, 15, 20, 25, 30, 35, 40), t = 3, r = 10,
   res$FDis.mean <- FDis.mean
   invisible(res)
 }
+
+### END
