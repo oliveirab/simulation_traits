@@ -2,7 +2,8 @@ The following R code simulates assemblages, calculates functional diversity metr
 
 1. For the pdf version of Supporting Information click [here](https://github.com/oliveirab/simulation_traits/blob/master/simTrait.pdf)    
 2. For access to the [source code](https://github.com/oliveirab/simulation_traits/blob/master/simTrait.R)  
-3. For access to source code for the pdf refered above, see [code pdf](https://github.com/oliveirab/simulation_traits/blob/master/simTrait.Rmd)  
+3. For access the modified simul.dbFD function click [here]
+ 
 
 ***
 Contact brunno.oliveira@me.com for any further information.  
