@@ -1,0 +1,203 @@
+
+---
+title: 'Simulates assemblages and calculate FD metrics. Supplementary material in: Species and functional diversity accumulate differently in terrestrial mammals'
+author: Brunno F. Oliveira^1,2^; Antonin Machac^3,4,5^; Gabriel C. Costa^1^; Thomas M. Brooks^6^; Ana D. Davidson^7^; Carlo Rondinini^8^; Catherine H. Graham^2^;
+date: "Global Ecology and Biogeography, 2016 |
+
+**1** Departamento de Ecologia, Universidade Federal do Rio Grande do Norte, Natal, Brasil. |
+**2** Department of Ecology and Evolution, Stony Brook University, Stony Brook, New York 11794, USA. |
+**3** Center for Macroecology, Evolution, and Climate, Natural History Museum of Denmark, Universitetsparken 15, DK 2100 Copenhagen, Denmark. |
+**4** Department of Ecology, Charles University, Vinicna 7, 128 44 Praha 2, Czech Republic. |
+**5** Center for Theoretical Study, Charles University and Academy of Sciences of the Czech Republic, Jilska 1, 110 00 Praha 1, Czech Republic. |
+**6** International Union for Conservation of Nature, 1196 Gland, Switzerland
+7NatureServe, Arlington, VA, USA. |
+**8** Global Mammal Assessment Program, Department of Biology and Biotechnologies, Sapienza Universita di Roma, Rome, Italy. |
+
+**Corresponding author:** (brunno.oliveira@me.com)
+"
+output: pdf_document
+theme: united
+toc: yes
+---
+
+***
+
+>This doccument follows the principles of reproducible research (Peng, 2011). This documment was generated in __R studio__ with `kintr` package. 
+
+*** 
+
+\newpage
+
+1. Packages versions:
+===============================
+```{r info,message=FALSE,echo=F}
+info <- sessionInfo()
+```
+
+We used `r info[1]$R$ver` and the following packages:
+
+```{r packages,message=FALSE}
+library(FD)
+```
+
+```{r echo=F}
+setwd("~/Dropbox/Doutorado Brunno/Manuscritos/Chap1 Age and FD/TraitSim/GitHub_repo_simulation_traits")
+```
+
+2. Load functions:
+=================
+```{r runcode}
+# modified version of simul_dbFD function from FD packages
+source("simul_dbFB_mod.R")
+
+# Pairs correlation
+# P-value and r coefficient
+panel.cor <- function(x, y, digits=2, cex.cor)
+{
+  usr <- par("usr"); on.exit(par(usr))
+  par(usr = c(0, 1, 0, 1))
+  r <- abs(cor(x, y))
+  txt <- format(c(r, 0.123456789), digits=digits)[1]
+  test <- cor.test(x,y)
+  Signif <- ifelse(round(test$p.value,3)<0.001,"p<0.001",paste("p=",round(test$p.value,3)))  
+  text(0.5, 0.25, paste("r=",txt))
+  text(.5, .75, Signif)
+}
+# Apply smoth regression line
+panel.smooth<-function (x, y, col = "black", bg = NA, pch = 18, 
+                        cex = 0.8, col.smooth = "red", span = 2/3, iter = 3, ...) 
+{
+  points(x, y, pch = pch, col = col, bg = bg, cex = cex)
+  ok <- is.finite(x) & is.finite(y)
+  if (any(ok)) 
+    lines(stats::lowess(x[ok], y[ok], f = span, iter = iter), 
+          col = col.smooth, ...)
+}
+# Add histogram to the diagonal
+panel.hist <- function(x, ...)
+{
+  usr <- par("usr"); on.exit(par(usr))
+  par(usr = c(usr[1:2], 0, 1.5) )
+  h <- hist(x, plot = FALSE)
+  breaks <- h$breaks; nB <- length(breaks)
+  y <- h$counts; y <- y/max(y)
+  rect(breaks[-nB], 0, breaks[-1], y, col="white", ...)
+}
+```
+
+3. Simulate assemblages and calculate FD metrics:
+=================
+3.1 _Experiment 1:_ Simulate trait values following a normal distribution and using parameters extracted from the distribution of body mass observed across mammals   
+P.S.: In this first experiment lets use a modified version of the simul.dbFD function from FD package. With this function it is possible to give parameters to generate trait values.   
+----------------
+```{r simul1, fig.show='hide'}
+# s - vector listing the different levels of species richness used in the simulations
+# t	- number of traits
+# r	- number of replicates per species richness level
+# p	- number of species in the common species pool
+# tr.method	- character string indicating the sampling distribution for the traits. "unif" is a uniform distribution, "norm" is a normal distribution, and "lnorm" is a lognormal distribution.
+# abun.method	- character string indicating the sampling distribution for the species abundances. Same as for tr.method.
+# w.abun - logical; should FDis, FEve, FDiv, and Rao's quadratic entropy (Q) be weighted by species abundances?
+
+res1 <- simul.dbFD.mod(s = c(5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100), t = 5, r = 1000, p = 500, tr.par = c(5.05, 2.47), tr.method ="norm", w.abun = F)
+
+results1 <- data.frame(res1$results)
+colnames(results1)[1] <- "Richness"
+```
+
+3.2 _Experiment 2:_ Simulate trait values following a normal distribution
+----------------
+```{r simul2, fig.show='hide'}
+res2 <- simul.dbFD(s = c(5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100), t = 5, r = 1000, p = 500, tr.method ="norm", w.abun = F)
+
+results2 <- data.frame(res2$results)
+colnames(results2)[1] <- "Richness"
+```
+
+3.3 _Experiment 3:_ Simulate trait values following a log normal distribution
+----------------
+```{r simul3, fig.show='hide'}
+res3 <- simul.dbFD(s = c(5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100), t = 5, r = 1000, p = 500, tr.method ="norm", w.abun = F)
+
+results3 <- data.frame(res3$results)
+colnames(results3)[1] <- "Richness"
+```
+
+
+4. Get standard deviation and range of simulates traits in assemblages:
+=================
+4.1 _Experiment 1:_
+----------------
+```{r}
+res1$abun[res1$abun > 0] <- 1 
+
+SD <- NA
+amp <- NA
+for(i in 1:nrow(res1$abun)){
+  tmp <- res1$traits[which(res1$abun[i,]==1)]
+  SD[i] <- sd(tmp)
+  amp[i] <- max(tmp)-min(tmp)
+}
+
+experiment1 <- cbind(SD, amp, results1)
+```
+
+4.2 _Experiment 2:_
+----------------
+```{r}
+res2$abun[res2$abun > 0] <- 1 
+
+SD <- NA
+amp <- NA
+for(i in 1:nrow(res2$abun)){
+  tmp <- res2$traits[which(res2$abun[i,]==1)]
+  SD[i] <- sd(tmp)
+  amp[i] <- max(tmp)-min(tmp)
+}
+
+experiment2 <- cbind(SD, amp, results2)
+```
+
+4.3 _Experiment 3:_
+----------------
+```{r}
+res3$abun[res3$abun > 0] <- 1 
+
+SD <- NA
+amp <- NA
+for(i in 1:nrow(res3$abun)){
+  tmp <- res3$traits[which(res3$abun[i,]==1)]
+  SD[i] <- sd(tmp)
+  amp[i] <- max(tmp)-min(tmp)
+}
+
+experiment3 <- cbind(SD, amp, results3)
+```
+
+
+5. Plot results:
+=================
+4.1 _Experiment 1:_
+----------------
+```{r}
+pairs(experiment1,
+      lower.panel=panel.smooth, upper.panel=panel.cor,diag.panel=panel.hist)
+```
+
+4.2 _Experiment 2:_
+----------------
+```{r}
+pairs(experiment2,
+      lower.panel=panel.smooth, upper.panel=panel.cor,diag.panel=panel.hist)
+```
+
+4.3 _Experiment 3:_
+----------------
+```{r}
+pairs(experiment3,
+      lower.panel=panel.smooth, upper.panel=panel.cor,diag.panel=panel.hist)
+```
+
+
+Please cite the original publication.  
+Contact brunno.oliveira@me.com for any further information.
