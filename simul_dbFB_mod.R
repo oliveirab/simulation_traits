@@ -2,16 +2,17 @@
 #### Brunno Oliveira, 2016
 #### Modified version of simul.dbFD from FD package
 #### With this function it is possible to give parameters for simulated trait values
-#### The two parameters for simulated traits must be given in the argument tr.par, separated by comma.
+#### Parameters for simulated traits must be given in the argument tr.par, separated by comma.
 #### If tr.method = lnorm .:. c(meanlog, sdlog)
 #### If tr.method = norm .:. c(mean, sd)
 #### If tr.method = unif .:. c(min, max)
+#### If tr.method = exp .:. rate
 #### Contact brunno.oliveira@me.com for any further information.
 ##############################################################
 
 simul.dbFD.mod <- 
 function (s = c(5, 10, 15, 20, 25, 30, 35, 40), t = 3, r = 10, 
-          p = 100, tr.method = c("unif", "norm", "lnorm"), tr.par= c(p1 = 0,p2 = 1), 
+          p = 100, tr.method = c("unif", "norm", "lnorm", "exp"), tr.par= c(p1 = 0,p2 = 1), 
           abun.method = c("lnorm", "norm", "unif"), w.abun = TRUE) 
 {
   if (p < max(s)) 
@@ -30,6 +31,8 @@ function (s = c(5, 10, 15, 20, 25, 30, 35, 40), t = 3, r = 10,
     traits <- apply(traits, 2, function(p) rnorm(p, p1, p2))
   if (tr.method == "lnorm") 
     traits <- apply(traits, 2, function(p) rlnorm(p, p1, p2))
+  if (tr.method == "exp") 
+    traits <- apply(traits, 2, function(p) rexp(p, p1))
   abun <- list(rep(0, p))
   abun <- rep(abun, r * l.s)
   fill.abun <- function(x, y, z) {
